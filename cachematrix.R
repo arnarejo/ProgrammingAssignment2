@@ -1,23 +1,24 @@
-## Functions that cache the inverse of a matrix
-
-## Create a special "matrix", which is a list containing
-## a function to
-##   - set the value of the matrix
-##   - get the value of the matrix
-##   - set the value of the inverse matrix
-##   - get the value of the inverse matrix
-
-## Write a short comment describing this function
+## A pair of functions that cache the inverse of a matrix
+## makeCacheMatrix:creates a special "matrix" object that can cache its inverse.
 
 makeCacheMatrix <- function(x = matrix()) {
+    ##Initialize the inverse property
   i <- NULL
+    ## Method to set the matrix
   set <- function(y) {
     x <<- y
     i <<- NULL
   }
-  get <- function() x
+  ## Method the get the matrix  
+  get <- function() x ## Return the matrix  
+  
+  ## Method to set the inverse of the matrix
   setinverse <- function(inv) i <<- inv
+  
+  ## Method to get the inverse of the matrix    
   getinverse <- function() i
+  
+  ## Return a list of the methods
   list(
     set = set,
     get = get,
@@ -27,25 +28,24 @@ makeCacheMatrix <- function(x = matrix()) {
 
 }
 
-## Write a short comment describing this function
+## cacheSolve: computes the inverse of the special "matrix" returned by makeCacheMatrix above. 
+## If the inverse has already been calculated (and the matrix has not changed), 
+## then the cachesolve should retrieve the inverse from the cache.
 cacheSolve <- function(x, ...) {
   ## Return a matrix that is the inverse of 'x'
   i <- x$getinverse()
+  ## Return the inverse if its already set
   if(!is.null(i)) {
     message("getting cached data")
     return(i)
   }
+  ## Get the matrix from our object 
   data <- x$get()
+  ## Calculate the inverse using matrix multiplication  
   i <- inv(data, ...)
+  ## Set the inverse to the object  
+  
   x$setinverse(i)
+  ## Return the matrix   
   i 
 }
-
-
-## Usage example:
-## > source('cachematrix.R')
-## > m <- makeCacheMatrix(matrix(c(2, 0, 0, 2), c(2, 2)))
-## > cacheSolve(m)
-## [,1] [,2]
-## [1,]  0.5  0.0
-## [2,]  0.0  0.5
